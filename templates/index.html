@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户列表</title>
+    <style>
+        .action-btn {
+            width: 100%;
+            padding: 12px 20px;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .action-btn:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+        }
+        
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .user-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .user-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .user-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #8e44ad);
+        }
+        
+        .user-info {
+            margin-bottom: 15px;
+        }
+        
+        .user-name {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin: 0 0 8px 0;
+        }
+        
+        .user-email {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin: 0 0 15px 0;
+        }
+        
+        .highlight-data {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .user-id {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ecf0f1;
+            color: #7f8c8d;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .user-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>用户列表</h1>
+        <div class="user-grid">
+            {% for user in users %}
+            <div class="user-card">
+                <div class="user-id">{{ user.id }}</div>
+                <div class="user-info">
+                    <h2 class="user-name">{{ user.name }}</h2>
+                    <p class="user-description">{{ user.description }}</p>
+                </div>
+                <div class="highlight-data">
+                    艾草次数:   {{ user.count }}
+                </div>
+                <button class="action-btn" data-user-id="{{ user.id }}" onclick="window.location.href='/api/getcao?uid={{ user.name }}'">香草</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

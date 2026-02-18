@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员面板 - 用户管理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .panel {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-section {
+            flex: 1;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .users-section {
+            flex: 2;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .edit-form {
+            display: none;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .edit-form.active {
+            display: block;
+        }
+
+        .cancel-edit {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        .cancel-edit:hover {
+            background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+        }
+
+        #backlogin {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .panel {
+                flex-direction: column;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 10px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>管理员面板</h1>
+            <p class="subtitle">用户管理系统</p>
+            <a id="backlogin" type="submit" onclick="window.location.href='/login'">重新设置key</a>
+        </header>
+        
+        <div class="panel">
+            <div class="form-section">
+                <h2>添加新用户</h2>
+                <form action="/add_user" method="post">
+                    <div class="form-group">
+                        <label for="name">昵称:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">介绍:</label>
+                        <input type="text" id="description" name="description" required>
+                    </div>
+                    
+                    <!-- <div class="form-group">
+                        <label for="role">角色:</label>
+                        <select id="role" name="role" required>
+                            <option value="普通用户">普通用户</option>
+                        </select>
+                    </div> -->
+                    
+                    <button type="submit">添加用户</button>
+                </form>
+            </div>
+            
+            <div class="users-section">
+                <h2>用户列表</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>姓名</th>
+                            <th>介绍</th>
+                            <th>计数</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr id="user-row-{{ user.id }}">
+                            <td>{{ user.id }}</td>
+                            <td id="name-{{ user.id }}">{{ user.name }}</td>
+                            <td id="description-{{ user.id }}">{{ user.description }}</td>
+                            <td class="actions">
+                                <button class="btn-success edit-btn" onclick="showEditForm({{ user.id }})">编辑</button>
+                                <form action="/delete_user/{{ user.name }}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn-danger" onclick="return confirm('确定要删除这个用户吗？')">删除</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div id="edit-form-{{ user.id }}" class="edit-form">
+                                    <form action="/update_user/{{ user.name }}" method="post">
+                                        <div class="form-group">
+                                            <input type="text" name="name" value="{{ user.name }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="description" value="{{ user.description }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="count" value="{{ user.count }}" required>
+                                        </div>
+                                        <button type="submit">保存更改</button>
+                                        <button type="button" class="cancel-edit" onclick="hideEditForm({{ user.id }})">取消</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showEditForm(userId) {
+            // 隐藏所有编辑表单
+            document.querySelectorAll('.edit-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // 显示当前用户的编辑表单
+            document.getElementById(`edit-form-${userId}`).classList.add('active');
+        }
+        
+        function hideEditForm(userId) {
+            document.getElementById(`edit-form-${userId}`).classList.remove('active');
+        }
+        
+        // 页面加载后隐藏所有编辑表单
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.edit-form').forEach(form => {
+                form.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
